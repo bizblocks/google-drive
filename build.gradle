@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.cubaVersion = '6.10.13'
+    ext.cubaVersion = '7.1.7'
     repositories {
         
         maven {
@@ -26,33 +26,31 @@ def webModule = project(":${modulePrefix}-web")
 def servletApi = 'javax.servlet:javax.servlet-api:3.1.0'
 
 
-apply(plugin: 'idea')
 apply(plugin: 'cuba')
 
 cuba {
     artifact {
         group = 'com.company.googledrive'
-        version = "0.4"
+        version = "0.7"
         isSnapshot = true
     }
     tomcat {
         dir = "$project.rootDir/deploy/tomcat"
     }
-    uploadRepository {
+/*    uploadRepository {
         url = myMavenRepoWriteUrl
-    }
+    }*/
 }
 
 dependencies {
     appComponent("com.haulmont.cuba:cuba-global:$cubaVersion")
 }
 
-def postgres = 'org.postgresql:postgresql:9.4.1212'
+def postgres = 'org.postgresql:postgresql:42.2.9'
 
 configure([globalModule, coreModule, webModule]) {
     apply(plugin: 'java')
     apply(plugin: 'maven')
-    apply(plugin: 'idea')
     apply(plugin: 'cuba')
 
     dependencies {
@@ -84,6 +82,10 @@ configure(globalModule) {
         implementation 'com.google.api-client:google-api-client:1.23.0'
         implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
         implementation 'com.google.apis:google-api-services-drive:v3-rev110-1.23.0'
+        if (!JavaVersion.current().isJava8()) {
+            runtime('javax.xml.bind:jaxb-api:2.3.1')
+            runtime('org.glassfish.jaxb:jaxb-runtime:2.3.1')
+        }
     }
 }
 
@@ -96,7 +98,7 @@ configure(coreModule) {
 
     dependencies {
         compile(globalModule)
-        provided(servletApi)
+        compileOnly(servletApi)
         jdbc(postgres)
         testRuntime(postgres)
         implementation 'com.google.api-client:google-api-client:1.23.0'
@@ -149,7 +151,7 @@ configure(webModule) {
     }
 
     dependencies {
-        provided(servletApi)
+        compileOnly(servletApi)
         compile(globalModule)
         implementation 'com.google.api-client:google-api-client:1.23.0'
         implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
@@ -217,6 +219,3 @@ task restart(dependsOn: ['stop', ":${modulePrefix}-core:deploy", ":${modulePrefi
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.3.1'
-}
