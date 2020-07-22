@@ -9,7 +9,7 @@ import com.haulmont.cuba.core.entity.FileDescriptor;
 import com.haulmont.cuba.core.global.DataManager;
 import com.haulmont.cuba.core.global.FileStorageException;
 import com.haulmont.cuba.core.app.FileStorageAPI;
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

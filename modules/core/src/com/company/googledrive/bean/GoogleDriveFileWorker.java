@@ -22,7 +22,7 @@ import com.haulmont.cuba.core.global.FileStorageException;
 import com.haulmont.cuba.core.global.PersistenceHelper;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
